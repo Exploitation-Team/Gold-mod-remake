@@ -1,0 +1,23 @@
+#the mod name as displayed in-game
+displayName: "Gold mod Remake"
+
+#the internal name of your mod
+name: "gold"
+
+#your name
+author: "Exploitation Team"
+
+#the fully qualified main class of the mod
+main: "gold.GMR"
+
+#the mod description as seen in the mod dialog
+description: "The remake of gold mod by Slotterlett in java"
+
+#the mod version
+version: 1.0
+
+#the minimum game build required to run this mod
+minGameVersion: 139
+
+#this is a java mod
+java: true
