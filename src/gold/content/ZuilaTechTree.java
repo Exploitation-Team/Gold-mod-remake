@@ -26,15 +26,26 @@ public class ZuilaTechTree {
                 });
             });
             node(groundOne, Seq.with(new SectorComplete(SectorPresets.planetaryTerminal), new Research(coreShiny)),() -> {
+                node(schemeBattle, Seq.with(new SectorComplete(groundOne), new Research(prelver)),() -> {
 
+                });
             });
             node(goldDrillStation, Seq.with(new OnSector(groundOne), new Produce(GMRItems.gold)),() -> {
 
             });
             node(goldFurnance, Seq.with(new OnSector(groundOne)),() -> {
-                node(goldFurnance, Seq.with(new Produce(GMRLiquids.liquidGold)),() -> {
+                node(goldPressurer, Seq.with(new Produce(GMRLiquids.liquidGold)),() -> {
 
                 });
+            });
+            node(prelver,() -> {
+
+            });
+            node(goldBridge,() -> {
+
+            });
+            node(oilGenerator,() -> {
+
             });
         });
     }

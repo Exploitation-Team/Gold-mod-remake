@@ -4,6 +4,8 @@ import arc.graphics.*;
 import arc.struct.*;
 import mindustry.type.*;
 
+import static mindustry.content.Items.*;
+
 public class GMRItems {
 
     public static Item gold, rawgold;
@@ -21,5 +23,9 @@ public class GMRItems {
             cost = 5f;
             healthScaling = 3.2f;
         }};
+        goldItems.addAll(
+                scrap, copper, lead, graphite, coal, titanium, thorium, silicon, plastanium,
+                phaseFabric, surgeAlloy, sporePod, sand, blastCompound, pyratite, metaglass, gold, rawgold
+        );
     }
 }

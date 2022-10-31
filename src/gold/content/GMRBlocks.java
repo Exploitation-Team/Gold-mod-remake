@@ -11,6 +11,7 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.content.*;
+import mindustry.world.blocks.power.ConsumeGenerator;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.draw.*;
 import mindustry.world.blocks.production.*;
@@ -26,7 +27,7 @@ public class GMRBlocks {
     public static Block
 
     //environment
-    goldOre, darksandTarred, sandTarred, oilWall,
+    goldOre, darksandTarred, sandTarred, oilWall, goldBridge,
     //defence
 
     //production
@@ -35,6 +36,8 @@ public class GMRBlocks {
     coreShiny,
     //crafting
     goldFurnance, goldPressurer,
+    //power
+    oilGenerator,
     //turrets
     prelver;
     public static void load(){
@@ -67,6 +70,15 @@ public class GMRBlocks {
             supportsOverlay = true;
 
         }};
+        goldBridge = new Floor("gold-bridge"){{
+            requirements(Category.effect, with(GMRItems.gold, 4));
+            variants = 0;
+            health = 130;
+            targetable = true;
+            breakable = true;
+            destructible = true;
+            placeableLiquid = true;
+        }};
         oilWall = new StaticWall("oil-wall"){{
             variants = 3;
             darksandTarred.asFloor().wall = Blocks.tar.asFloor().wall = Blocks.duneWall;
@@ -76,7 +88,7 @@ public class GMRBlocks {
         }};
         //production
         goldDrillStation = new SolidPump("goldDrillStation"){{
-            requirements(Category.production, with(Items.lead, 200, Items.titanium, 150, Items.silicon, 200, Items.metaglass, 50, Items.thorium, 100));
+            requirements(Category.production, with(Items.lead, 200, Items.titanium, 150, Items.silicon, 200, Items.metaglass, 50, Items.thorium, 100, GMRItems.rawgold, 40));
             result = GMRLiquids.liquidGold;
             pumpAmount = 0.07f;
             size = 3;
@@ -85,13 +97,14 @@ public class GMRBlocks {
             attribute = GMRAttributes.golden;
 
             consumePower(4f);
+            researchCostMultiplier = 0.5f;
         }};
         //storage
         coreShiny = new CoreBlock("core-shiny"){{
-            requirements(Category.effect, BuildVisibility.editorOnly, with(Items.copper, 5000, Items.lead, 6000, Items.silicon, 5000, Items.thorium, 3000, GMRItems.gold, 6000));
+            requirements(Category.effect, with(Items.copper, 5000, Items.lead, 6000, Items.silicon, 5000, Items.thorium, 3000, GMRItems.gold, 6000));
             alwaysUnlocked = true;
             isFirstTier = true;
-            unitType = UnitTypes.alpha;
+            unitType = GMRUnits.sigma;
             health = 12000;
             itemCapacity = 16000;
             size = 3;
@@ -125,15 +138,24 @@ public class GMRBlocks {
             consumeItems(with(Items.copper, 1, Items.lead, 1));
             consumeLiquid(GMRLiquids.liquidGold, 28f / 60f);
         }};
+        //power
+        oilGenerator = new ConsumeGenerator("oil-generator"){{
+            requirements(Category.power, with(Items.silicon, 70, Items.graphite, 55, Items.titanium, 50, GMRItems.rawgold, 30));
+            powerProduction = 4.6f;
+            consumeLiquid(Liquids.oil, 4f / 60f);
+            size = 2;
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(), new DrawDefault());
+            liquidCapacity = 20f;
+        }};
         //turrets
         prelver = new ItemTurret("prelver"){{
             requirements(Category.turret, with(
-                    Items.copper, 70,
-                    Items.graphite, 50,
-                    Items.titanium, 40,
-                    GMRItems.gold, 20
+                    Items.copper, 90,
+                    Items.graphite, 60,
+                    Items.titanium, 50,
+                    GMRItems.gold, 30
             ));
-            scaledHealth = 86;
+            scaledHealth = 190;
             size = 2;
             reload = 30f;
             range = 170f;

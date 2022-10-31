@@ -5,7 +5,6 @@ import arc.util.*;
 import gold.content.*;
 import mindustry.game.EventType.*;
 import mindustry.mod.*;
-
 import static mindustry.Vars.ui;
 
 public class GMR extends Mod{

@@ -3,10 +3,15 @@ package gold.content;
 import arc.graphics.*;
 import gold.graphics.*;
 import gold.planets.*;
+import mindustry.Vars;
 import mindustry.content.*;
 import mindustry.game.Team;
 import mindustry.graphics.g3d.*;
 import mindustry.type.*;
+
+import static gold.content.GMRItems.goldItems;
+import static mindustry.content.Items.*;
+import static mindustry.content.Planets.*;
 
 
 public class GMRPlanets {
@@ -31,6 +36,7 @@ public class GMRPlanets {
             atmosphereRadIn = 0.01f;
             atmosphereRadOut = 0.3f;
             clearSectorOnLose = true;
+            allowLaunchLoadout = true;
             ruleSetter = r -> {
                 r.loadout = ItemStack.list(Items.copper, 100, Items.lead, 100);
                 r.defaultTeam = Team.sharded;
@@ -42,4 +48,6 @@ public class GMRPlanets {
                 r.coreIncinerates = true;
             };
         }};
+        zuila.hiddenItems.addAll(Vars.content.items()).removeAll(goldItems);
+        serpulo.hiddenItems.addAll(Vars.content.items()).removeAll(serpuloItems);
     }}

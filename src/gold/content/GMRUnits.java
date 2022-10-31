@@ -1,6 +1,7 @@
 package gold.content;
 
 import arc.graphics.*;
+import gold.graphics.GMRPal;
 import mindustry.ai.types.*;
 import mindustry.entities.abilities.*;
 import mindustry.entities.bullet.*;
@@ -17,8 +18,10 @@ import mindustry.content.*;
 public class GMRUnits {
     public static UnitType
             //bosses
-    rgbTrio;
-
+    rgbTrio,
+            //core
+    sigma
+    ;
     public static void load(){
         rgbTrio = new MissileUnitType("rgb-trio"){{
             speed = 0f;
@@ -149,7 +152,49 @@ public class GMRUnits {
                         }};
                     }});
         }};
+        sigma = new UnitType("sigma"){{
+            aiController = BuilderAI::new;
+            isEnemy = false;
+            constructor = UnitEntity::create;
 
+            lowAltitude = true;
+            flying = true;
+            mineSpeed = 9f;
+            mineTier = 3;
+            buildSpeed = 1.5f;
+            drag = 0.04f;
+            speed = 3.75f;
+            rotateSpeed = 20f;
+            accel = 0.11f;
+            itemCapacity = 80;
+            health = 430f;
+            engineOffset = 6f;
+            hitSize = 13f;
+            weapons.add(new Weapon("gold-blaster-weapon"){{
+                top = false;
+                mirror = false;
+                reload = 50f;
+                x = 0f;
+                y = 3f;
+
+                ejectEffect = Fx.casing1;
+
+                bullet = new BasicBulletType(4f, 16){{
+
+                    width = 8f;
+                    height = 8f;
+                    lifetime = 55f;
+                    shootEffect = Fx.thoriumShoot;
+                    smokeEffect = Fx.shootSmallSmoke;
+                    buildingDamageMultiplier = 0.01f;
+                    sprite = "circle-bullet";
+                    splashDamage = 30f;
+                    splashDamageRadius = 20f;
+                    backColor = GMRPal.goldHeat;
+                    frontColor = Color.white;
+                }};
+            }});
+        }};
 
     }
 }
