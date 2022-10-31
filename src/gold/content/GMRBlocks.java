@@ -39,7 +39,7 @@ public class GMRBlocks {
     //power
     oilGenerator,
     //turrets
-    prelver;
+    prelver, blafter;
     public static void load(){
         Blocks.grass.attributes.set(GMRAttributes.golden, 1f);
         Blocks.darksandWater.attributes.set(GMRAttributes.golden, 1.6f);
@@ -229,6 +229,65 @@ public class GMRBlocks {
                     });
                 });
             }});
+            drawer = new DrawTurret("gold-");
+        }};
+        blafter = new ItemTurret("blafter"){{
+            requirements(Category.turret, with(
+                    Items.copper, 150,
+                    Items.graphite, 135,
+                    Items.titanium, 60,
+                    GMRItems.gold, 75
+            ));
+            targetAir = false;
+            scaledHealth = 430;
+            size = 3;
+            reload = 60f;
+            range = 290f;
+            recoil = 3f;
+            coolant = consumeCoolant(0.3f);
+            heatColor = GMRPal.goldHeat;
+            ammo(
+                    GMRItems.gold, new BasicBulletType(){{
+                        damage = 0f;
+                        lifetime = 0f;
+                        speed = 1000f;
+                        fragBullets = 4;
+                        fragVelocityMin = 0.2f;
+                        fragRandomSpread = 40;
+                        fragLifeMin = 0.6f;
+                        fragBullet =  new ArtilleryBulletType(){{
+                            splashDamage = 10f;
+                            splashDamageRadius = 30f;
+                            speed = 2f;
+                            lifetime = 20f;
+                            width = 10f;
+                            height = 10f;
+                            fragBullets = 4;
+                            fragVelocityMin = 0.2f;
+                            fragRandomSpread = 60;
+                            fragLifeMin = 0.6f;
+                            fragBullet =  new ArtilleryBulletType(){{
+                                    splashDamage = 16f;
+                                    splashDamageRadius = 40f;
+                                    speed = 2.8f;
+                                    lifetime = 50f;
+                                    width = 9f;
+                                    height = 9f;
+                                    fragBullets = 4;
+                                    fragVelocityMin = 0.2f;
+                                    fragRandomSpread = 60;
+                                    fragLifeMin = 0.6f;
+                                fragBullet =  new ArtilleryBulletType(){{
+                                    splashDamage = 20f;
+                                    splashDamageRadius = 50f;
+                                    speed = 3.4f;
+                                    lifetime = 60f;
+                                    width = 8f;
+                                    height = 8f;
+                                }};
+                            }};
+                        }};
+                    }});
             drawer = new DrawTurret("gold-");
         }};
     }

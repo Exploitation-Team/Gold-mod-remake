@@ -8,7 +8,7 @@ import static mindustry.content.Items.*;
 
 public class GMRItems {
 
-    public static Item gold, rawgold;
+    public static Item gold, rawgold, shinyAlloy;
 
     public static final Seq<Item> goldItems = new Seq<>();
 
@@ -23,9 +23,13 @@ public class GMRItems {
             cost = 5f;
             healthScaling = 3.2f;
         }};
+        shinyAlloy = new Item("shiny-alloy", Color.valueOf("d4d4d4")){{
+            cost = 9f;
+            healthScaling = 6f;
+        }};
         goldItems.addAll(
                 scrap, copper, lead, graphite, coal, titanium, thorium, silicon, plastanium,
-                phaseFabric, surgeAlloy, sporePod, sand, blastCompound, pyratite, metaglass, gold, rawgold
+                phaseFabric, surgeAlloy, sporePod, sand, blastCompound, pyratite, metaglass, gold, rawgold, shinyAlloy
         );
     }
 }

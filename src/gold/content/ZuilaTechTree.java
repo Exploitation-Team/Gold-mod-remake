@@ -39,7 +39,9 @@ public class ZuilaTechTree {
                 });
             });
             node(prelver,() -> {
+                node(blafter,() -> {
 
+                });
             });
             node(goldBridge,() -> {
 
