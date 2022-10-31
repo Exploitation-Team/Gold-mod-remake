@@ -267,8 +267,8 @@ public class GMRBlocks {
                             fragRandomSpread = 60;
                             fragLifeMin = 0.6f;
                             fragBullet =  new ArtilleryBulletType(){{
-                                    splashDamage = 16f;
-                                    splashDamageRadius = 40f;
+                                    splashDamage = 10f;
+                                    splashDamageRadius = 30f;
                                     speed = 2.8f;
                                     lifetime = 50f;
                                     width = 9f;
@@ -278,8 +278,8 @@ public class GMRBlocks {
                                     fragRandomSpread = 60;
                                     fragLifeMin = 0.6f;
                                 fragBullet =  new ArtilleryBulletType(){{
-                                    splashDamage = 20f;
-                                    splashDamageRadius = 50f;
+                                    splashDamage = 10f;
+                                    splashDamageRadius = 30f;
                                     speed = 3.4f;
                                     lifetime = 60f;
                                     width = 8f;
