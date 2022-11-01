@@ -45,6 +45,7 @@ public class ZuilaPlanetGenerator extends PlanetGenerator{
             };
     {
         baseSeed = 3;
+        defaultLoadout = GMRLoadouts.basicShiny;
     }
 
     ObjectMap<Block, Block> dec = ObjectMap.of(
@@ -622,10 +623,8 @@ public class ZuilaPlanetGenerator extends PlanetGenerator{
         //spawn air only when spawn is blocked
         state.rules.spawns = Waves.generate(difficulty, new Rand(sector.id), state.rules.attackMode, state.rules.attackMode && spawner.countGroundSpawns() == 0, naval);
     }
-    @Override
-    public Schematic getDefaultLoadout(){
-        return GMRLoadouts.basicShiny;
-    }
+
+
     @Override
     public void postGenerate(Tiles tiles){
         if(sector.hasEnemyBase()){

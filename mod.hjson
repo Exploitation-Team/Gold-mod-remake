@@ -17,7 +17,7 @@ description: "The remake of gold mod by Slotterlett in java"
 version: 1.0
 
 #the minimum game build required to run this mod
-minGameVersion: 139
+minGameVersion: 140
 
 #this is a java mod
 java: true
