@@ -1,7 +1,7 @@
 package gold.content;
 
 import arc.graphics.*;
-import gold.graphics.GMRPal;
+import gold.graphics.*;
 import mindustry.ai.types.*;
 import mindustry.entities.abilities.*;
 import mindustry.entities.bullet.*;
@@ -18,7 +18,7 @@ import mindustry.content.*;
 public class GMRUnits {
     public static UnitType
             //bosses
-    rgbTrio,
+    rgbTrio, baldiMech,
             //core
     sigma
     ;
@@ -151,6 +151,33 @@ public class GMRUnits {
                             }};;
                         }};
                     }});
+        }};
+        baldiMech = new UnitType("baldi-mech"){{
+            constructor = MechUnit::create;
+            health = 30000;
+            speed = 0.15f;
+            hitSize = 11f;
+            flying = false;
+            range = 60f;
+            weapons.add(new Weapon("ruler"){{
+                top = false;
+                mirror = false;
+                reload = 140f;
+                x = 0f;
+                y = 2f;
+                shootSound = GMRSounds.rulerSlap;
+                ejectEffect = Fx.casing1;
+
+                bullet = new LaserBulletType(100000000000f){{
+                    recoil = -15f;
+                    width = 1f;
+                    length = 60f;
+                    lifetime = 6f;
+                    shootEffect = Fx.none;
+                    smokeEffect = Fx.none;
+                    colors = new Color[]{Color.red,Color.red,Color.red};
+                }};
+            }});
         }};
         sigma = new UnitType("sigma"){{
             aiController = BuilderAI::new;

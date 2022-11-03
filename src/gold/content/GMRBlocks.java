@@ -1,5 +1,6 @@
 package gold.content;
 
+import arc.graphics.Color;
 import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import gold.graphics.*;
@@ -11,6 +12,7 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.content.*;
+import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.power.ConsumeGenerator;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.draw.*;
@@ -35,7 +37,9 @@ public class GMRBlocks {
     //storage
     coreShiny,
     //crafting
-    goldFurnance, goldPressurer,
+    goldFurnance, goldPressurer, shinyAlloySmelter,
+    //defence
+    goldWall, goldWallLarge, shinyWall, shinyWallLarge,
     //power
     oilGenerator,
     //turrets
@@ -137,6 +141,49 @@ public class GMRBlocks {
             consumePower(3.2f);
             consumeItems(with(Items.copper, 1, Items.lead, 1));
             consumeLiquid(GMRLiquids.liquidGold, 28f / 60f);
+        }};
+        shinyAlloySmelter = new GenericCrafter("shiny-alloy-smelter"){{
+            requirements(Category.crafting, with(Items.lead, 200, Items.silicon, 170, Items.titanium, 150, GMRItems.gold, 100));
+            size = 3;
+            health = 2400;
+            outputItem = new ItemStack(GMRItems.shinyAlloy, 1);
+
+            craftTime = 74f;
+            hasPower = true;
+            drawer = new DrawMulti(new DrawDefault(), new DrawFlame());
+
+            consumePowerBuffered(4f);
+            consumePower(2f);
+            consumeItems(with(Items.lead, 6, Items.titanium, 5, Items.silicon, 3, GMRItems.gold, 2));
+        }};
+        //defence
+        goldWall = new Wall("gold-wall"){{
+            requirements(Category.defense, with(GMRItems.gold, 6));
+            health = 900;
+            envDisabled |= Env.scorching;
+        }};
+        goldWallLarge = new Wall("gold-wall-large"){{
+            requirements(Category.defense, with(GMRItems.gold, 24));
+            size = 2;
+            health = 900 * 4;
+            envDisabled |= Env.scorching;
+        }};
+        shinyWall = new Wall("shiny-wall"){{
+            requirements(Category.defense, with(GMRItems.shinyAlloy, 6));
+            lightningChance = 0.1f;
+            lightningColor = Color.white;
+            lightningDamage = 35f;
+            health = 1100;
+            envDisabled |= Env.scorching;
+        }};
+        shinyWallLarge = new Wall("shiny-wall-large"){{
+            requirements(Category.defense, with(GMRItems.shinyAlloy, 24));
+            size = 2;
+            lightningChance = 0.1f;
+            lightningColor = Color.white;
+            lightningDamage = 35f;
+            health = 1100 * 4;
+            envDisabled |= Env.scorching;
         }};
         //power
         oilGenerator = new ConsumeGenerator("oil-generator"){{
@@ -253,20 +300,21 @@ public class GMRBlocks {
                         speed = 1000f;
                         fragBullets = 4;
                         fragVelocityMin = 0.2f;
-                        fragRandomSpread = 40;
+                        fragRandomSpread = 60;
                         fragLifeMin = 0.6f;
-                        fragBullet =  new ArtilleryBulletType(){{
-                            splashDamage = 10f;
-                            splashDamageRadius = 30f;
-                            speed = 2f;
-                            lifetime = 20f;
-                            width = 10f;
-                            height = 10f;
-                            fragBullets = 4;
-                            fragVelocityMin = 0.2f;
-                            fragRandomSpread = 60;
-                            fragLifeMin = 0.6f;
-                            fragBullet =  new ArtilleryBulletType(){{
+                        fragBullet = new ArtilleryBulletType(){
+                            {
+                                splashDamage = 10f;
+                                splashDamageRadius = 30f;
+                                speed = 2f;
+                                lifetime = 20f;
+                                width = 10f;
+                                height = 10f;
+                                fragBullets = 4;
+                                fragVelocityMin = 0.2f;
+                                fragRandomSpread = 60;
+                                fragLifeMin = 0.6f;
+                                fragBullet = new ArtilleryBulletType() {{
                                     splashDamage = 10f;
                                     splashDamageRadius = 30f;
                                     speed = 2.8f;
@@ -277,16 +325,70 @@ public class GMRBlocks {
                                     fragVelocityMin = 0.2f;
                                     fragRandomSpread = 60;
                                     fragLifeMin = 0.6f;
-                                fragBullet =  new ArtilleryBulletType(){{
-                                    splashDamage = 10f;
-                                    splashDamageRadius = 30f;
-                                    speed = 3.4f;
-                                    lifetime = 60f;
-                                    width = 8f;
-                                    height = 8f;
+                                    fragBullet = new ArtilleryBulletType() {{
+                                        splashDamage = 10f;
+                                        splashDamageRadius = 30f;
+                                        speed = 3.4f;
+                                        lifetime = 60f;
+                                        width = 8f;
+                                        height = 8f;
+                                    }};
                                 }};
                             }};
-                        }};
+                    }},
+                    GMRItems.shinyAlloy, new BasicBulletType(){{
+                        damage = 0f;
+                        lifetime = 0f;
+                        speed = 1000f;
+                        fragBullets = 4;
+                        fragVelocityMin = 0.2f;
+                        fragRandomSpread = 60;
+                        fragLifeMin = 0.6f;
+                        fragBullet = new ArtilleryBulletType(){
+                            {
+                                splashDamage = 16f;
+                                splashDamageRadius = 30f;
+                                speed = 2f;
+                                lifetime = 20f;
+                                width = 10f;
+                                height = 10f;
+                                lightning = 3;
+                                lightningLength = 6;
+                                lightningColor = Color.white;
+                                lightningDamage = 20;
+                                fragBullets = 4;
+                                fragVelocityMin = 0.2f;
+                                fragRandomSpread = 60;
+                                fragLifeMin = 0.6f;
+                                fragBullet = new ArtilleryBulletType() {{
+                                    splashDamage = 16f;
+                                    splashDamageRadius = 30f;
+                                    speed = 2.8f;
+                                    lifetime = 50f;
+                                    width = 9f;
+                                    height = 9f;
+                                    fragBullets = 4;
+                                    fragVelocityMin = 0.2f;
+                                    fragRandomSpread = 60;
+                                    fragLifeMin = 0.6f;
+                                    lightning = 3;
+                                    lightningLength = 6;
+                                    lightningColor = Color.white;
+                                    lightningDamage = 20;
+                                    fragBullet = new ArtilleryBulletType() {{
+                                        splashDamage = 16f;
+                                        splashDamageRadius = 30f;
+                                        speed = 3.4f;
+                                        lifetime = 60f;
+                                        width = 8f;
+                                        height = 8f;
+                                        lightning = 3;
+                                        lightningLength = 6;
+                                        lightningColor = Color.white;
+                                        lightningDamage = 20;
+                                    }};
+                                }};
+                            }};
                     }});
             drawer = new DrawTurret("gold-");
         }};

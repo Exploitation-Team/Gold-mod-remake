@@ -22,6 +22,7 @@ public class GMR extends Mod{
     @Override
     public void loadContent(){
         Log.info("Loading some gold content.");
+        GMRSounds.load();
         GMRAttributes.load();
         GMRItems.load();
         GMRLiquids.load();

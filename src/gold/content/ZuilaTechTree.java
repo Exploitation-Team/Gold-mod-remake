@@ -22,12 +22,16 @@ public class ZuilaTechTree {
 
                 });
                 nodeProduce(GMRItems.gold, () -> {
+                    nodeProduce(GMRItems.shinyAlloy, () -> {
 
+                    });
                 });
             });
             node(groundOne, Seq.with(new SectorComplete(SectorPresets.planetaryTerminal), new Research(coreShiny)),() -> {
                 node(schemeBattle, Seq.with(new SectorComplete(groundOne), new Research(prelver)),() -> {
+                    node(abandonedLaboratory, Seq.with(new SectorComplete(schemeBattle)),() -> {
 
+                    });
                 });
             });
             node(goldDrillStation, Seq.with(new OnSector(groundOne), new Produce(GMRItems.gold)),() -> {
@@ -35,7 +39,9 @@ public class ZuilaTechTree {
             });
             node(goldFurnance, Seq.with(new OnSector(groundOne)),() -> {
                 node(goldPressurer, Seq.with(new Produce(GMRLiquids.liquidGold)),() -> {
+                    node(shinyAlloySmelter,Seq.with(new SectorComplete(abandonedLaboratory)),() -> {
 
+                    });
                 });
             });
             node(prelver,() -> {
@@ -48,6 +54,16 @@ public class ZuilaTechTree {
             });
             node(oilGenerator,() -> {
 
+            });
+            node(goldWall,() -> {
+                node(goldWallLarge,() -> {
+
+                });
+                node(shinyWall,() -> {
+                    node(shinyWallLarge,() -> {
+
+                    });
+                });
             });
         });
     }
