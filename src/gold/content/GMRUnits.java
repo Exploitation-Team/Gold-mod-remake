@@ -18,7 +18,7 @@ import mindustry.content.*;
 public class GMRUnits {
     public static UnitType
             //bosses
-    rgbTrio, baldiMech,
+    rgbTrio, baldiMech, carrier,
             //core
     sigma
     ;
@@ -178,6 +178,47 @@ public class GMRUnits {
                     colors = new Color[]{Color.red,Color.red,Color.red};
                 }};
             }});
+        }};
+        carrier = new UnitType("carrier"){{
+            isEnemy = true;
+            constructor = UnitEntity::create;
+
+            lowAltitude = true;
+            flying = true;
+            drag = 0.04f;
+            speed = 0f;
+            rotateSpeed = 12f;
+            accel = 0.11f;
+            itemCapacity = 2000;
+            health = 50000f;
+            engineOffset = 47f;
+            engineSize = 12f;
+            hitSize = 78f;
+            weapons.add(new Weapon("gold-big-cannon-weapon"){{
+                top = false;
+                mirror = false;
+                reload = 200f;
+                x = 0f;
+                y = 0f;
+
+                ejectEffect = Fx.casing1;
+
+                bullet = new BasicBulletType(8f, 400){{
+
+                    width = 14f;
+                    height = 22f;
+                    lifetime = 240f;
+                    pierce = true;
+                    pierceBuilding = true;
+                    pierceCap = 5;
+                    shootEffect = Fx.thoriumShoot;
+                    smokeEffect = Fx.shootSmallSmoke;
+                    backColor = Color.white;
+                    frontColor = GMRPal.goldHeat;
+                }};
+            }});
+            abilities.add(new UnitSpawnAbility(UnitTypes.flare, 300f,0f, 40f),new UnitSpawnAbility(UnitTypes.flare, 300f,0f, -40f),new UnitSpawnAbility(UnitTypes.zenith, 2700f,20f, 0f), new UnitSpawnAbility(UnitTypes.zenith, 2700f,-20f, 0f));
+            abilities.add(new UnitSpawnAbility(UnitTypes.horizon, 800f,0f, 45f),new UnitSpawnAbility(UnitTypes.horizon, 800f,0f, -45f));
         }};
         sigma = new UnitType("sigma"){{
             aiController = BuilderAI::new;

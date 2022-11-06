@@ -4,7 +4,11 @@ import arc.graphics.Color;
 import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import gold.graphics.*;
-import mindustry.entities.Effect;
+import gold.world.distrbution.*;
+import gold.world.meta.*;
+import gold.world.production.*;
+import gold.world.storage.*;
+import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
@@ -12,9 +16,10 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.content.*;
-import mindustry.world.blocks.defense.Wall;
-import mindustry.world.blocks.power.ConsumeGenerator;
-import mindustry.world.blocks.storage.CoreBlock;
+import mindustry.world.blocks.defense.*;
+import mindustry.world.blocks.distribution.*;
+import mindustry.world.blocks.power.*;
+import mindustry.world.blocks.storage.*;
 import mindustry.world.draw.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.environment.*;
@@ -29,21 +34,22 @@ public class GMRBlocks {
     public static Block
 
     //environment
-    goldOre, darksandTarred, sandTarred, oilWall, goldBridge,
-    //defence
-
+    goldOre, darksandTarred, sandTarred, oilWall, goldBridge, goldStone,
     //production
-    goldDrillStation,
+    goldDrillStation, spaceDrill,
     //storage
-    coreShiny,
+    coreShiny, coreSolar,
     //crafting
-    goldFurnance, goldPressurer, shinyAlloySmelter,
+    goldFurnance, goldPressurer, shinyAlloySmelter, basicSmelter, advancedSmelter, GSS,
+    //distribution
+    goldDuct, goldDuctRouter, goldTransporter, goldDuctBridge, shinyTransporter,
     //defence
     goldWall, goldWallLarge, shinyWall, shinyWallLarge,
     //power
     oilGenerator,
     //turrets
-    prelver, blafter;
+    prelver, blafter, navales
+            ;
     public static void load(){
         Blocks.grass.attributes.set(GMRAttributes.golden, 1f);
         Blocks.darksandWater.attributes.set(GMRAttributes.golden, 1.6f);
@@ -83,10 +89,13 @@ public class GMRBlocks {
             destructible = true;
             placeableLiquid = true;
         }};
+        goldStone = new Floor("gold-stone"){{
+            variants = 3;
+        }};
         oilWall = new StaticWall("oil-wall"){{
             variants = 3;
             darksandTarred.asFloor().wall = Blocks.tar.asFloor().wall = Blocks.duneWall;
-            sandTarred.asFloor().wall = Blocks.sandWall;
+            sandTarred.asFloor().wall = goldStone.asFloor().wall = Blocks.sandWall;
             Blocks.grass.asFloor().wall = Blocks.shrubs;
             inEditor = false;
         }};
@@ -103,6 +112,15 @@ public class GMRBlocks {
             consumePower(4f);
             researchCostMultiplier = 0.5f;
         }};
+        spaceDrill = new PowerDrill("space-drill"){{
+            requirements(Category.production, with(GMRItems.gold, 20));
+            tier = 4;
+            drillTime = 360;
+            size = 2;
+            envRequired = GMREnv.goldSpace;
+            researchCost = with(GMRItems.gold, 50);
+            powerProduction = 20f / 60f;
+        }};
         //storage
         coreShiny = new CoreBlock("core-shiny"){{
             requirements(Category.effect, with(Items.copper, 5000, Items.lead, 6000, Items.silicon, 5000, Items.thorium, 3000, GMRItems.gold, 6000));
@@ -114,6 +132,26 @@ public class GMRBlocks {
             size = 3;
 
             unitCapModifier = 12;
+        }};
+        coreSolar = new FactoryCore("core-solar"){{
+            requirements(Category.effect, with(Items.lead, 6000, Items.titanium, 7000, Items.thorium, 5000, GMRItems.gold, 6500));
+            alwaysUnlocked = true;
+            isFirstTier = true;
+            unitType = GMRUnits.sigma;
+            health = 12000;
+            itemCapacity = 15000;
+            size = 3;
+
+            unitCapModifier = 12;
+            outputItem = new ItemStack(GMRItems.gold, 1);
+
+            craftTime = 55f;
+            craftEffect = Fx.hitLaser;
+            hasPower = true;
+            drawer = new DrawMulti(new DrawDefault(), new DrawFlame());
+            consumeItems(with(GMRItems.rawgold, 3));
+            envRequired = GMREnv.goldSpace;
+            canOverdrive = true;
         }};
         //crafting
         goldFurnance = new GenericCrafter("gold-furnance"){{
@@ -149,12 +187,109 @@ public class GMRBlocks {
             outputItem = new ItemStack(GMRItems.shinyAlloy, 1);
 
             craftTime = 74f;
-            hasPower = true;
+            hasPower = consumesPower = outputsPower = true;
             drawer = new DrawMulti(new DrawDefault(), new DrawFlame());
 
             consumePowerBuffered(4f);
             consumePower(2f);
             consumeItems(with(Items.lead, 6, Items.titanium, 5, Items.silicon, 3, GMRItems.gold, 2));
+        }};
+        basicSmelter = new GenericCrafter("basic-smelter"){{
+            requirements(Category.crafting, with(Items.lead, 110, GMRItems.gold, 80));
+            size = 1;
+            health = 100;
+            outputItem = new ItemStack(GMRItems.gold, 1);
+            envEnabled = GMREnv.goldSpace | Env.space;
+            envDisabled = Env.terrestrial;
+            craftTime = 216f;
+            hasPower = true;
+            drawer = new DrawMulti(new DrawDefault(), new DrawFlame());
+
+            consumePower(0.9f);
+            consumeItems(with(GMRItems.rawgold, 2));
+        }};
+        advancedSmelter = new GenericCrafter("advanced-smelter"){{
+            requirements(Category.crafting, with(Items.lead, 185, Items.thorium, 70,GMRItems.gold, 120));
+            size = 2;
+            health = 100;
+            outputItem = new ItemStack(GMRItems.gold, 2);
+            envEnabled = GMREnv.goldSpace | Env.space;
+            envDisabled = Env.terrestrial;
+            craftTime = 112f;
+            hasPower = true;
+            drawer = new DrawMulti(new DrawDefault(), new DrawFlame());
+
+            consumePower(1.55f);
+            consumeItems(with(GMRItems.rawgold, 3));
+        }};
+        //distribution
+        goldDuct = new GoldDuct("gold-duct"){{
+            requirements(Category.distribution, with(GMRItems.gold, 1));
+            health = 90;
+            speed = 4.6f;
+            researchCost = with(GMRItems.gold, 10);
+            envRequired = GMREnv.goldSpace;
+            hasPower = true;
+            consumesPower = true;
+            conductivePower = true;
+            underBullets = true;
+            consumePower(1f / 60f);
+        }};
+        goldDuctRouter = new DuctRouter("gold-duct-router"){{
+            requirements(Category.distribution, with(GMRItems.gold, 10));
+            health = 90;
+            speed = 4.6f;
+            regionRotated1 = 1;
+            solid = false;
+            researchCost = with(GMRItems.gold, 30);
+            hasPower = true;
+            consumesPower = true;
+            conductivePower = true;
+            underBullets = true;
+            envRequired = GMREnv.goldSpace;
+            consumePower(4f / 60f);
+        }};
+        goldTransporter = new MassDriver("gold-transporter"){{
+            requirements(Category.distribution, with(Items.lead, 60, GMRItems.gold, 70));
+            size = 2;
+            itemCapacity = 50;
+            reload = 140f;
+            range = 480f;
+            consumePower(0.65f);
+            envRequired = GMREnv.goldSpace;
+            bullet = new MassDriverBolt(){{
+                speed = 10f;
+                lifetime = 2400f;
+                damage = 60f;
+                lightning = 3;
+                lightningColor = Color.gold;
+                lightningDamage = 20f;
+            }};
+        }};
+        goldDuctBridge = new DuctBridge("space-bridge"){{
+            requirements(Category.distribution, with(GMRItems.gold, 15));
+            health = 10;
+            size = 1;
+            range = 5;
+            envRequired = GMREnv.goldSpace;
+            consumePower(5f / 60f);
+        }};
+        shinyTransporter = new MassDriver("shiny-transporter"){{
+            requirements(Category.distribution, with(Items.thorium, 75, GMRItems.gold, 90, GMRItems.shinyAlloy, 40));
+            size = 2;
+            itemCapacity = 50;
+            reload = 300f;
+            range = 850f;
+            envRequired = GMREnv.goldSpace;
+            consumePower(1.15f);
+            bullet = new MassDriverBolt(){{
+                speed = 16f;
+                lifetime = 2400f;
+                damage = 100f;
+                lightning = 5;
+                lightningColor = Color.white;
+                lightningDamage = 40f;
+            }};
         }};
         //defence
         goldWall = new Wall("gold-wall"){{
@@ -390,6 +525,33 @@ public class GMRBlocks {
                                 }};
                             }};
                     }});
+            drawer = new DrawTurret("gold-");
+        }};
+        navales = new ItemTurret("navales"){{
+            requirements(Category.turret, with(GMRItems.gold, 30));
+            envEnabled = GMREnv.goldSpace | Env.space;
+            envDisabled = Env.terrestrial;
+            ammo(
+                    GMRItems.rawgold, new BasicBulletType(3.6f, 5){{
+                        width = 6f;
+                        height = 8f;
+                        homingPower = 0.1f;
+                        reloadMultiplier = 1.5f;
+                        ammoMultiplier = 3;
+                        lifetime = 60f;
+                    }}
+            );
+
+            reload = 25f;
+            range = 110;
+            shootCone = 15f;
+            ammoUseEffect = Fx.casing1;
+            scaledHealth = 100;
+            rotateSpeed = 12f;
+            coolant = consumeCoolant(0.1f);
+            researchCostMultiplier = 0.05f;
+
+            limitRange();
             drawer = new DrawTurret("gold-");
         }};
     }

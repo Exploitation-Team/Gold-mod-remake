@@ -1,14 +1,22 @@
 package gold.content;
 
 import arc.graphics.*;
+import arc.math.*;
+import arc.math.geom.*;
+import arc.struct.*;
+import arc.util.*;
 import gold.graphics.*;
 import gold.planets.*;
+import gold.world.meta.GMREnv;
 import mindustry.Vars;
 import mindustry.content.*;
-import mindustry.game.Team;
+import mindustry.game.*;
+import mindustry.graphics.Pal;
 import mindustry.graphics.g3d.*;
 import mindustry.type.*;
+import mindustry.world.meta.*;
 
+import static gold.content.GMRItems.falrenItems;
 import static gold.content.GMRItems.goldItems;
 import static mindustry.content.Items.*;
 import static mindustry.content.Planets.*;
@@ -16,7 +24,7 @@ import static mindustry.content.Planets.*;
 
 public class GMRPlanets {
     public static Planet
-            zuila;
+            zuila, falren;
     public static void load(){
         Planets.tantros.visible = true;
         zuila = new Planet("zuila", Planets.sun, 1f, 3){{
@@ -48,6 +56,51 @@ public class GMRPlanets {
                 r.coreIncinerates = true;
             };
         }};
+        falren = new Planet("falren", zuila, 0.2f){{
+            hasAtmosphere = false;
+            updateLighting = false;
+            icon = "commandRally";
+            sectors.add(new Sector(this, PlanetGrid.Ptile.empty));
+            camRadius = 0.68f * 1.3f;
+            minZoom = 0.5f;
+            drawOrbit = false;
+            accessible = true;
+            alwaysUnlocked = true;
+            clipRadius = 2f;
+            defaultEnv = GMREnv.goldSpace;
+            generator = new GMRAsteroidsGenerator(){{
+                carbonChance = 0.36f;
+                goldChance = 0.55f;
+                crystalChance = 0.4f;
+            }};
+            ruleSetter = r -> {
+                r.loadout = ItemStack.list(GMRItems.gold, 200);
+                r.winWave = 1;
+                r.waveTeam = Team.green;
+            };
+            meshLoader = () -> {
+                Rand rand = new Rand(8);
+                Seq<GenericMesh> meshes = new Seq<>();
+                meshes.add(new NoiseMesh(
+                        this, 8, 2, radius, 2, 0.65f, 0.45f, 14f,
+                        GMRPal.goldDark, GMRPal.goldDark, 3, 0.6f, 0.4f, 0.5f
+                ));
+
+                for(int j = 0; j < 28; j++){
+
+                    meshes.add(new MatMesh(
+                            new NoiseMesh(this, 7, 1, 0.032f + rand.random(0.05f) * 1.32f, 2, 0.6f, 0.36f, 21f,
+                                    GMRPal.carbon, GMRPal.carbon, 4, 0.74f, 0.4f, 0.5f),
+                            new Mat3D().setToTranslation(Tmp.v31.setToRandomDirection(rand).setLength(rand.random(0.44f, 1.4f) * 1.3f)))
+                    );
+                }
+
+                return new MultiMesh(meshes.toArray(GenericMesh.class));
+            };
+        }};
+
         zuila.hiddenItems.addAll(Vars.content.items()).removeAll(goldItems);
+        falren.hiddenItems.addAll(Vars.content.items()).removeAll(falrenItems);
         serpulo.hiddenItems.addAll(Vars.content.items()).removeAll(serpuloItems);
+
     }}

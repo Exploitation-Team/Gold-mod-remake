@@ -11,6 +11,7 @@ public class GMRItems {
     public static Item gold, rawgold, shinyAlloy;
 
     public static final Seq<Item> goldItems = new Seq<>();
+    public static final Seq<Item> falrenItems = new Seq<>();
 
     public static void load(){
         gold = new Item("gold", Color.valueOf("e0c518")){{
@@ -30,6 +31,9 @@ public class GMRItems {
         goldItems.addAll(
                 scrap, copper, lead, graphite, coal, titanium, thorium, silicon, plastanium,
                 phaseFabric, surgeAlloy, sporePod, sand, blastCompound, pyratite, metaglass, gold, rawgold, shinyAlloy
+        );
+        falrenItems.addAll(
+                lead, graphite, titanium, thorium, rawgold, gold, shinyAlloy
         );
     }
 }

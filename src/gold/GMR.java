@@ -32,6 +32,7 @@ public class GMR extends Mod{
         GMRPlanets.load();
         GMRSectors.load();
         ZuilaTechTree.load();
+        FalrenTechTree.load();
     }
 
 }
