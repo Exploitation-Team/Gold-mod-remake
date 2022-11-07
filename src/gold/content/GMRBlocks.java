@@ -261,9 +261,6 @@ public class GMRBlocks {
                 speed = 10f;
                 lifetime = 2400f;
                 damage = 60f;
-                lightning = 3;
-                lightningColor = Color.gold;
-                lightningDamage = 20f;
             }};
         }};
         goldDuctBridge = new DuctBridge("space-bridge"){{
@@ -286,9 +283,6 @@ public class GMRBlocks {
                 speed = 16f;
                 lifetime = 2400f;
                 damage = 100f;
-                lightning = 5;
-                lightningColor = Color.white;
-                lightningDamage = 40f;
             }};
         }};
         //defence
