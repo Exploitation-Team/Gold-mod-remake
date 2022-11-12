@@ -10,6 +10,7 @@ import gold.world.production.*;
 import gold.world.storage.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
+import mindustry.entities.part.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -48,7 +49,7 @@ public class GMRBlocks {
     //power
     oilGenerator,
     //turrets
-    prelver, blafter, navales
+    prelver, blafter, navales, scope
             ;
     public static void load(){
         Blocks.grass.attributes.set(GMRAttributes.golden, 1f);
@@ -137,7 +138,7 @@ public class GMRBlocks {
             requirements(Category.effect, with(Items.lead, 6000, Items.titanium, 7000, Items.thorium, 5000, GMRItems.gold, 6500));
             alwaysUnlocked = true;
             isFirstTier = true;
-            unitType = GMRUnits.sigma;
+            unitType = GMRUnits.plasma;
             health = 12000;
             itemCapacity = 15000;
             size = 3;
@@ -547,6 +548,95 @@ public class GMRBlocks {
 
             limitRange();
             drawer = new DrawTurret("gold-");
+        }};
+        scope = new ItemTurret("scope"){{
+            requirements(Category.turret, with(GMRItems.gold, 220, Items.graphite, 80, GMRItems.shinyAlloy, 115));
+            size = 3;
+            envEnabled = GMREnv.goldSpace | Env.space;
+            envDisabled = Env.terrestrial;
+            ammo(
+                    GMRItems.gold, new BasicBulletType(4.6f, 50){{
+                        width = 6f;
+                        height = 8f;
+                        ammoMultiplier = 1;
+                        lifetime = 300f/4.6f;
+                    }}
+            );
+
+            reload = 180f;
+            range = 300;
+            shootCone = 15f;
+            ammoUseEffect = Fx.casing1;
+            scaledHealth = 100;
+            rotateSpeed = 12f;
+            coolant = consumeCoolant(0.3f);
+            researchCostMultiplier = 0.6f;
+            ammoPerShot = 5;
+
+            limitRange();
+            drawer = new DrawTurret("gold-"){{
+                parts.addAll(
+                        new ShapePart(){{
+                            progress = PartProgress.warmup.delay(0.2f);
+                            color = Pal.accent;
+                            hollow = true;
+                            stroke = 0f;
+                            strokeTo = 1.4f;
+                            radius = 3f;
+                            layer = Layer.effect;
+                            y = 0;
+                            rotate = true;
+                            rotateSpeed = 7f;
+                            x = 0;
+                        }},
+                        new ShapePart(){{
+                            progress = PartProgress.warmup.delay(0.2f);
+                            color = Pal.accent;
+                            hollow = true;
+                            stroke = 0f;
+                            strokeTo = 1.4f;
+                            radius = 4.5f;
+                            layer = Layer.effect;
+                            y = 3;
+                            rotate = true;
+                            rotateSpeed = 6f;
+                            x = 0;
+                        }},
+                        new ShapePart(){{
+                            progress = PartProgress.warmup.delay(0.2f);
+                            color = Pal.accent;
+                            hollow = true;
+                            stroke = 0f;
+                            strokeTo = 1.4f;
+                            radius = 5.5f;
+                            layer = Layer.effect;
+                            y = 5.5f;
+                            rotate = true;
+                            rotateSpeed = 5f;
+                            x = 0;
+                        }},
+                        new ShapePart(){{
+                            progress = PartProgress.warmup.delay(0.2f);
+                            color = Pal.accent;
+                            hollow = true;
+                            stroke = 0f;
+                            strokeTo = 1.4f;
+                            radius = 6.5f;
+                            layer = Layer.effect;
+                            rotate = true;
+                            rotateSpeed = 4f;
+                            x = 0;
+                            y = 8;
+                        }},
+                        new RegionPart("-blade"){{
+                            progress = PartProgress.warmup;
+                            heatProgress = PartProgress.warmup;
+                            mirror = true;
+                            moveX = 1f;
+                            moveY = -1f;
+                            moves.add(new PartMove(PartProgress.recoil, 0f, 0f, -16f));
+                        }});
+            }};
         }};
     }
 }

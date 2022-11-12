@@ -1,6 +1,7 @@
 package gold.content;
 
 import arc.graphics.*;
+import arc.math.Mathf;
 import gold.graphics.*;
 import mindustry.ai.types.*;
 import mindustry.entities.abilities.*;
@@ -20,7 +21,7 @@ public class GMRUnits {
             //bosses
     rgbTrio, baldiMech, carrier,
             //core
-    sigma
+    sigma, plasma
     ;
     public static void load(){
         rgbTrio = new MissileUnitType("rgb-trio"){{
@@ -196,12 +197,15 @@ public class GMRUnits {
             hitSize = 78f;
             weapons.add(new Weapon("gold-big-cannon-weapon"){{
                 top = false;
+                rotate = true;
+                rotateSpeed = 20f;
                 mirror = false;
                 reload = 200f;
                 x = 0f;
                 y = 0f;
+                shootY = 3f;
 
-                ejectEffect = Fx.casing1;
+                ejectEffect = Fx.shootBig;
 
                 bullet = new BasicBulletType(8f, 400){{
 
@@ -217,8 +221,8 @@ public class GMRUnits {
                     frontColor = GMRPal.goldHeat;
                 }};
             }});
-            abilities.add(new UnitSpawnAbility(UnitTypes.flare, 300f,0f, 40f),new UnitSpawnAbility(UnitTypes.flare, 300f,0f, -40f),new UnitSpawnAbility(UnitTypes.zenith, 2700f,20f, 0f), new UnitSpawnAbility(UnitTypes.zenith, 2700f,-20f, 0f));
-            abilities.add(new UnitSpawnAbility(UnitTypes.horizon, 800f,0f, 45f),new UnitSpawnAbility(UnitTypes.horizon, 800f,0f, -45f));
+            abilities.add(new UnitSpawnAbility(UnitTypes.flare, 300f,0f, 30f),new UnitSpawnAbility(UnitTypes.flare, 300f,0f, -30f),new UnitSpawnAbility(UnitTypes.zenith, 2700f,20f, 0f), new UnitSpawnAbility(UnitTypes.zenith, 2700f,-20f, 0f));
+            abilities.add(new UnitSpawnAbility(UnitTypes.horizon, 800f,0f, 35f),new UnitSpawnAbility(UnitTypes.horizon, 800f,0f, -35f));
         }};
         sigma = new UnitType("sigma"){{
             aiController = BuilderAI::new;
@@ -263,6 +267,50 @@ public class GMRUnits {
                 }};
             }});
         }};
+        plasma = new UnitType("plasma"){{
+            aiController = BuilderAI::new;
+            isEnemy = false;
+            constructor = UnitEntity::create;
 
+            lowAltitude = true;
+            flying = true;
+            mineSpeed = 10f;
+            mineTier = 3;
+            buildSpeed = 1.6f;
+            drag = 0.036f;
+            speed = 4f;
+            rotateSpeed = 24f;
+            accel = 0.11f;
+            itemCapacity = 80;
+            health = 520f;
+            armor = 3f;
+            engineOffset = 6f;
+            hitSize = 14f;
+            weapons.add(new Weapon(){{
+                reload = 25f;
+                x = 0f;
+                y = 2f;
+                rotate = false;
+                shootY = 0f;
+                aimDst = 0f;
+                shootCone = 15f;
+                mirror = false;
+                healColor = GMRPal.goldHeat;
+                shoot = new ShootHelix(){{
+                    offset = Mathf.PI * 2f;
+                    mag = 1f;
+                }};
+                shoot.shots = 4;
+                shoot.shotDelay = 6f;
+                bullet = new BasicBulletType(4f,10f){{
+                    width = 7f;
+                    height = 11f;
+                    healAmount = 2f;
+                    backColor = frontColor = trailColor = GMRPal.goldHeat;
+                    trailWidth = 1.8f;
+                    trailLength = 4;
+                }};
+            }});
+        }};
     }
 }

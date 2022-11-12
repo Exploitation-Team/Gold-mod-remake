@@ -60,6 +60,7 @@ public class GMRPlanets {
             hasAtmosphere = false;
             updateLighting = false;
             icon = "commandRally";
+            iconColor = GMRPal.goldDark;
             sectors.add(new Sector(this, PlanetGrid.Ptile.empty));
             camRadius = 0.68f * 1.3f;
             minZoom = 0.5f;

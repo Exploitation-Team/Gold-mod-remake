@@ -3,6 +3,7 @@ package gold;
 import arc.*;
 import arc.util.*;
 import gold.content.*;
+import mindustry.content.*;
 import mindustry.game.EventType.*;
 import mindustry.mod.*;
 import static mindustry.Vars.ui;
@@ -17,6 +18,9 @@ public class GMR extends Mod{
             //show dialog upon startup
             ui.showOkText("@gold.disclaimer", "@gold.unknown",() -> {});
         });
+        //if(SectorPresets.origin.sector.isCaptured()){
+        //
+        //}
     }
 
     @Override
