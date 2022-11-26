@@ -20,6 +20,8 @@ public class GMRUnits {
     public static UnitType
             //bosses
     rgbTrio, baldiMech, carrier,
+            //campaign
+    transporter,
             //core
     sigma, plasma
     ;
@@ -149,7 +151,7 @@ public class GMRUnits {
                                         height = 6f;
                                     }};
                                 }});
-                            }};;
+                            }};
                         }};
                     }});
         }};
@@ -224,8 +226,49 @@ public class GMRUnits {
             abilities.add(new UnitSpawnAbility(UnitTypes.flare, 300f,0f, 30f),new UnitSpawnAbility(UnitTypes.flare, 300f,0f, -30f),new UnitSpawnAbility(UnitTypes.zenith, 2700f,20f, 0f), new UnitSpawnAbility(UnitTypes.zenith, 2700f,-20f, 0f));
             abilities.add(new UnitSpawnAbility(UnitTypes.horizon, 800f,0f, 35f),new UnitSpawnAbility(UnitTypes.horizon, 800f,0f, -35f));
         }};
+        transporter = new UnitType("transporter"){{
+            playerControllable = false;
+            logicControllable = false;
+            constructor = MechUnit::create;
+            health = 8000;
+            speed = 0.1f;
+            hitSize = 28f;
+            flying = false;
+            range = 200f;
+            weapons.add(new Weapon("small-weapon"){{
+                rotate = true;
+                mirror = true;
+                reload = 10f;
+                x = 3.6f;
+                y = 2.5f;
+                ejectEffect = Fx.casing1;
+
+                bullet = new BasicBulletType(5f, 40){{
+                    recoil = 0.2f;
+                    width = 7f;
+                    height = 12f;
+                    lifetime = 40f;
+                }};
+            }},
+            new Weapon("small-weapon"){{
+                rotate = true;
+                mirror = true;
+                reload = 10f;
+                x = 3.6f;
+                y = -2.5f;
+                ejectEffect = Fx.casing1;
+
+                bullet = new BasicBulletType(5f, 40){{
+                    recoil = 0.2f;
+                    width = 7f;
+                    height = 12f;
+                    lifetime = 40f;
+                }};
+            }}
+            );
+        }};
         sigma = new UnitType("sigma"){{
-            aiController = BuilderAI::new;
+            controller = u -> new BuilderAI(true, 300f);
             isEnemy = false;
             constructor = UnitEntity::create;
 

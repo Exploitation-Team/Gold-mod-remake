@@ -1,4 +1,4 @@
-package gold.world.distrbution;
+package gold.world.blocks.distrbution;
 
 import arc.struct.*;
 import gold.content.GMRBlocks;

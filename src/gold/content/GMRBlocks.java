@@ -1,18 +1,16 @@
 package gold.content;
 
 import arc.graphics.Color;
-import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import gold.graphics.*;
-import gold.world.distrbution.*;
-import gold.world.meta.*;
-import gold.world.production.*;
-import gold.world.storage.*;
+import gold.world.blocks.distrbution.*;
+import gold.world.blocks.effect.PolyGraphProjector;
+import gold.world.blocks.meta.*;
+import gold.world.blocks.production.*;
+import gold.world.blocks.storage.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.part.*;
-import mindustry.entities.pattern.*;
-import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
@@ -41,15 +39,19 @@ public class GMRBlocks {
     //storage
     coreShiny, coreSolar,
     //crafting
-    goldFurnance, goldPressurer, shinyAlloySmelter, basicSmelter, advancedSmelter, GSS,
+    goldFurnance, goldPressurer, shinyAlloySmelter, basicSmelter, advancedSmelter, GSS, goldAccepter,
     //distribution
     goldDuct, goldDuctRouter, goldTransporter, goldDuctBridge, shinyTransporter,
     //defence
     goldWall, goldWallLarge, shinyWall, shinyWallLarge,
     //power
     oilGenerator,
+    //effect
+    protoField,
     //turrets
-    prelver, blafter, navales, scope
+    prelver, blafter, navales, scope,
+    //units
+    massiveTower
             ;
     public static void load(){
         Blocks.grass.attributes.set(GMRAttributes.golden, 1f);
@@ -223,6 +225,16 @@ public class GMRBlocks {
             consumePower(1.55f);
             consumeItems(with(GMRItems.rawgold, 3));
         }};
+        goldAccepter = new GenericCrafter("gold-accepter"){{
+            requirements(Category.crafting, BuildVisibility.editorOnly, with());
+            health = 1680;
+            size = 3;
+            outputItems = with(GMRItems.gold, 100);
+
+            craftTime = 320f;
+            hasLiquids = hasPower = true;
+            drawer = new DrawDefault();
+        }};
         //distribution
         goldDuct = new GoldDuct("gold-duct"){{
             requirements(Category.distribution, with(GMRItems.gold, 1));
@@ -323,6 +335,14 @@ public class GMRBlocks {
             size = 2;
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(), new DrawDefault());
             liquidCapacity = 20f;
+        }};
+        //effect
+        protoField = new PolyGraphProjector("proto-field"){{
+            requirements(Category.effect, with(GMRItems.gold, 80, Items.titanium, 120));
+            radius = 70f;
+            size = 3;
+            shieldHealth = 400f;
+            consumePower(1.4f);
         }};
         //turrets
         prelver = new ItemTurret("prelver"){{
@@ -555,30 +575,38 @@ public class GMRBlocks {
             envEnabled = GMREnv.goldSpace | Env.space;
             envDisabled = Env.terrestrial;
             ammo(
-                    GMRItems.gold, new BasicBulletType(4.6f, 50){{
+                    GMRItems.gold, new BasicBulletType(4.6f, 80){{
                         width = 6f;
                         height = 8f;
                         ammoMultiplier = 1;
                         lifetime = 300f/4.6f;
+                        backColor = frontColor = trailColor = GMRPal.goldHeat;
+                        trailWidth = 4f;
+                        trailLength = 6;
+                        pierce = true;
+                        pierceArmor = true;
+                        pierceBuilding = true;
+                        pierceCap = 3;
                     }}
             );
 
             reload = 180f;
             range = 300;
             shootCone = 15f;
-            ammoUseEffect = Fx.casing1;
+            ammoUseEffect = Fx.casing2;
             scaledHealth = 100;
             rotateSpeed = 12f;
             coolant = consumeCoolant(0.3f);
             researchCostMultiplier = 0.6f;
             ammoPerShot = 5;
+            rotate = false;
 
             limitRange();
             drawer = new DrawTurret("gold-"){{
                 parts.addAll(
                         new ShapePart(){{
                             progress = PartProgress.warmup.delay(0.2f);
-                            color = Pal.accent;
+                            color = GMRPal.goldDark;
                             hollow = true;
                             stroke = 0f;
                             strokeTo = 1.4f;
@@ -591,7 +619,7 @@ public class GMRBlocks {
                         }},
                         new ShapePart(){{
                             progress = PartProgress.warmup.delay(0.2f);
-                            color = Pal.accent;
+                            color = GMRPal.goldDark;
                             hollow = true;
                             stroke = 0f;
                             strokeTo = 1.4f;
@@ -604,7 +632,7 @@ public class GMRBlocks {
                         }},
                         new ShapePart(){{
                             progress = PartProgress.warmup.delay(0.2f);
-                            color = Pal.accent;
+                            color = GMRPal.goldHeat;
                             hollow = true;
                             stroke = 0f;
                             strokeTo = 1.4f;
@@ -617,7 +645,7 @@ public class GMRBlocks {
                         }},
                         new ShapePart(){{
                             progress = PartProgress.warmup.delay(0.2f);
-                            color = Pal.accent;
+                            color = GMRPal.goldHeat;
                             hollow = true;
                             stroke = 0f;
                             strokeTo = 1.4f;

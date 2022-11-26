@@ -18,7 +18,7 @@ public class GMR extends Mod{
             //show dialog upon startup
             ui.showOkText("@gold.disclaimer", "@gold.unknown",() -> {});
         });
-        //if(SectorPresets.origin.sector.isCaptured()){
+        //if(GMRSectors.sector.isCaptured()){
         //
         //}
     }

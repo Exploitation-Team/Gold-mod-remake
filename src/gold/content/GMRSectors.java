@@ -6,7 +6,7 @@ import static gold.content.GMRPlanets.*;
 
 public class GMRSectors {
     public static SectorPreset
-            groundOne, schemeBattle, abandonedLaboratory;
+            groundOne, schemeBattle, abandonedLaboratory, transporterCrags;
 
     public static void load(){
         groundOne = new SectorPreset("ground-one", zuila, 19){{
@@ -21,6 +21,9 @@ public class GMRSectors {
         abandonedLaboratory = new SectorPreset("abandoned-laboratory", zuila, 8){{
             captureWave = 40;
             difficulty = 8;
+        }};
+        transporterCrags = new SectorPreset("transporter-crags", zuila, 39){{
+            difficulty = 9;
         }};
     }
 }

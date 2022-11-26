@@ -1,4 +1,4 @@
-package gold.world.storage;
+package gold.world.blocks.storage;
 
 import arc.graphics.g2d.*;
 import arc.math.*;

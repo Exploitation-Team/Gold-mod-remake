@@ -1,4 +1,4 @@
-package gold.world.production;
+package gold.world.blocks.production;
 
 import mindustry.world.blocks.power.*;
 import arc.*;

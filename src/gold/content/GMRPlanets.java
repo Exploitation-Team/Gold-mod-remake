@@ -7,14 +7,12 @@ import arc.struct.*;
 import arc.util.*;
 import gold.graphics.*;
 import gold.planets.*;
-import gold.world.meta.GMREnv;
+import gold.world.blocks.meta.GMREnv;
 import mindustry.Vars;
 import mindustry.content.*;
 import mindustry.game.*;
-import mindustry.graphics.Pal;
 import mindustry.graphics.g3d.*;
 import mindustry.type.*;
-import mindustry.world.meta.*;
 
 import static gold.content.GMRItems.falrenItems;
 import static gold.content.GMRItems.goldItems;
@@ -91,7 +89,7 @@ public class GMRPlanets {
 
                     meshes.add(new MatMesh(
                             new NoiseMesh(this, 7, 1, 0.032f + rand.random(0.05f) * 1.32f, 2, 0.6f, 0.36f, 21f,
-                                    GMRPal.carbon, GMRPal.carbon, 4, 0.74f, 0.4f, 0.5f),
+                                    GMRPal.carbon, GMRPal.carbon, rand.random(2, 5), 0.74f, 0.4f, 0.5f),
                             new Mat3D().setToTranslation(Tmp.v31.setToRandomDirection(rand).setLength(rand.random(0.44f, 1.4f) * 1.3f)))
                     );
                 }
