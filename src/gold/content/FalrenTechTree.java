@@ -16,7 +16,7 @@ import static mindustry.content.TechTree.*;
 
 public class FalrenTechTree {
     public static void load(){
-        GMRPlanets.falren.techTree = nodeRoot("falren", coreSolar, false, () -> {
+        GMRPlanets.falren.techTree = nodeRoot("falren", GMRPlanets.falren, false, () -> {
             nodeProduce(GMRItems.rawgold, () -> {
                 nodeProduce(lead, () -> {
                     nodeProduce(graphite, () -> {
@@ -59,6 +59,9 @@ public class FalrenTechTree {
                 node(advancedSmelter,() -> {
 
                 });
+            });
+            node(coreSolar,() -> {
+
             });
         });
     }

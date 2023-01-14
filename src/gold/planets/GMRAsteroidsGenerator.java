@@ -147,6 +147,9 @@ public class GMRAsteroidsGenerator extends BlankPlanetGenerator{
         state.rules.dragMultiplier = 0.7f; //yes, space actually has 0 drag but true 0% drag is very annoying
         state.rules.borderDarkness = false;
         state.rules.waves = true;
+        state.rules.winWave = 2;
+        state.rules.waveTeam = Team.green;
+        state.rules.loadout = ItemStack.list(GMRItems.gold, 200);
 
         //TODO ???
         //state.rules.hiddenBuildItems.addAll(Items.plastanium, Items.surgeAlloy);
